@@ -28,24 +28,23 @@ class HomeViewModel: ObservableObject {
         }
     }
     
-    func deleteExpense(id: UUID, in context: ModelContext) {
+    func deleteExpense(id: UUID) {
         guard let modelContext = modelContext else {
             print("ModelContext is nil")
             return
         }
-        
+
         let descriptor = FetchDescriptor<Expense>(
             predicate: #Predicate { $0.uuid == id }
         )
-        
+
         do {
             let results = try modelContext.fetch(descriptor)
             if let expenseToDelete = results.first {
                 modelContext.delete(expenseToDelete)
                 try modelContext.save()
+                fetchData()
             }
-            fetchData()
-            
         } catch {
             print("Delete failed: \(error)")
         }

@@ -16,11 +16,11 @@ struct ExpenseRow: View {
         VStack (alignment: .leading){
             HStack{
                 Text(expense.title)
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 18, weight: .bold))
                 Spacer()
                 Text("$\(expense.amount)")
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundColor(.green)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.green.opacity(0.7))
             }
             
             Spacer().frame(height: 12)
@@ -29,13 +29,14 @@ struct ExpenseRow: View {
                 Text(expense.category)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .font(.system(size: 12))
-                    .background(.blue.opacity(0.3))
+                    .font(.system(size: 14))
+                    .foregroundColor(.blue.opacity(0.9))
+                    .background(.blue.opacity(0.1))
                     .cornerRadius(8)
                 
                 Spacer()
                 Text(dateFormatter.string(from: expense.date))
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.system(size: 16, weight: .regular))
             }
             
             Spacer().frame(height: 16)
@@ -50,7 +51,7 @@ struct ExpenseRow: View {
                             print("No id found")
                             return
                         }
-                        viewModel.deleteExpense(id: id, in: modelContext)
+                        viewModel.deleteExpense(id: id)
                         try? modelContext.save()
                     }
                 Spacer().frame(width: 24)
@@ -61,9 +62,8 @@ struct ExpenseRow: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
-        .background(.gray.opacity(0.05))
+        .background(.gray.opacity(0.08))
         .cornerRadius(12)
-        .padding(.horizontal, 16)
         .padding(.bottom, 16)
     }
 }

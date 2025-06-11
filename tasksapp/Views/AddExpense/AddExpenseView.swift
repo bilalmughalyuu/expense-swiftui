@@ -8,7 +8,9 @@ struct AddExpenseView: View {
     var body: some View {
         VStack(alignment: .leading){
             Text("Add Expenses")
-                .font(.system(size: 20, weight: .bold))
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundColor(.black)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer().frame(height: 24)
             
@@ -96,7 +98,7 @@ struct AddExpenseView: View {
             viewModel.setModelContext(modelContext)
             viewModel.setRootViewModel(viewModel: rootViewModel)
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 24)
         .frame(maxHeight: .infinity, alignment: .top)
         
     }
@@ -105,4 +107,5 @@ struct AddExpenseView: View {
 #Preview {
     AddExpenseView()
         .environmentObject(AddExpenseViewModel())
+        .environmentObject(RootViewModel())
 }

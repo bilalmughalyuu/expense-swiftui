@@ -16,7 +16,7 @@ struct RootView: View {
                     Text("Add Expense")
                 }
                 .tag(1)
-            Text("Chart")
+            ChartView()
                 .tabItem{
                     Image(systemName: "chart.bar")
                     Text("Chart")
