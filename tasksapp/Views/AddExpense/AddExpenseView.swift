@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct AddExpenseView: View {
+    @EnvironmentObject var rootViewModel: RootViewModel
     @EnvironmentObject var viewModel: AddExpenseViewModel
     @Environment(\.modelContext) private var modelContext
     var body: some View {
@@ -93,6 +94,7 @@ struct AddExpenseView: View {
         .onAppear {
             print("HomeView appeared")
             viewModel.setModelContext(modelContext)
+            viewModel.setRootViewModel(viewModel: rootViewModel)
         }
         .padding(.horizontal, 16)
         .frame(maxHeight: .infinity, alignment: .top)

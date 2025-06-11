@@ -11,10 +11,15 @@ class AddExpenseViewModel: ObservableObject {
     @Published var expenseCategories: [String] = ["Food", "Transportation", "Entertainment", "Utilities", "Other"]
     
     private var modelContext: ModelContext?
+    private var rootViewModel: RootViewModel?
     
     func setModelContext(_ context: ModelContext) {
         self.modelContext = context
 //        fetchExpenses()
+    }
+    
+    func setRootViewModel(viewModel: RootViewModel) {
+        self.rootViewModel = viewModel
     }
     
     
@@ -33,6 +38,7 @@ class AddExpenseViewModel: ObservableObject {
             amount = ""
             category = ""
             date = Date()
+            rootViewModel?.selectedTab = 0
         } catch {
             print("Failed to save expense: \(error.localizedDescription)")
         }

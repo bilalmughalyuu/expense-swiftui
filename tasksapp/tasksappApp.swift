@@ -8,6 +8,7 @@ struct tasksappApp: App {
     @StateObject private var navigationCordinator = NavigationCoordinator()
     @StateObject private var addExpenseViewModel = AddExpenseViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
+    @StateObject private var rootViewModel = RootViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -15,6 +16,7 @@ struct tasksappApp: App {
                 .environmentObject(signupViewModel)
                 .environmentObject(addExpenseViewModel)
                 .environmentObject(homeViewModel)
+                .environmentObject(rootViewModel)
                 .environmentObject(navigationCordinator)
         }
         .modelContainer(for: Expense.self)
