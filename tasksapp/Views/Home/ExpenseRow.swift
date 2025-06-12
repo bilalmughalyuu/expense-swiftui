@@ -16,14 +16,14 @@ struct ExpenseRow: View {
         VStack (alignment: .leading){
             HStack{
                 Text(expense.title)
-                    .font(.system(size: 18, weight: .bold))
+                    .font(.system(size: 18, weight: .semibold))
                 Spacer()
                 Text("$\(expense.amount)")
                     .font(.system(size: 18, weight: .bold))
                     .foregroundColor(.green.opacity(0.7))
             }
             
-            Spacer().frame(height: 12)
+            Spacer().frame(height: 16)
             
             HStack{
                 Text(expense.category)
@@ -39,7 +39,7 @@ struct ExpenseRow: View {
                     .font(.system(size: 16, weight: .regular))
             }
             
-            Spacer().frame(height: 16)
+//            Spacer().frame(height: 16)
             
             HStack {
                 Spacer()
@@ -56,13 +56,13 @@ struct ExpenseRow: View {
                     }
                 Spacer().frame(width: 24)
                 Image(systemName: "pencil")
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
                     .font(.system(size: 20))
             }
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 16)
-        .background(.gray.opacity(0.08))
+        .background(.secondary.opacity(0.1))
         .cornerRadius(12)
         .padding(.bottom, 16)
     }

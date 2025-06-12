@@ -5,7 +5,7 @@ struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var viewModel: HomeViewModel
     
-    @AppStorage("selectedTheme") var selectedTheme: AppTheme = .system
+    @AppStorage(Constants.COLOR_SCHEME_KEY) var selectedTheme: AppTheme = .system
     
     var body: some View {
         VStack {

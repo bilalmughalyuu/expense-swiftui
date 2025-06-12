@@ -9,7 +9,7 @@ struct AddExpenseView: View {
         VStack(alignment: .leading){
             Text("Add Expenses")
                 .font(.system(size: 22, weight: .semibold))
-                .foregroundColor(.black)
+                .foregroundColor(.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer().frame(height: 24)
@@ -20,10 +20,11 @@ struct AddExpenseView: View {
                 
                 TextEditor(text: $viewModel.title)
                     .padding(.leading, 2)
+                    .foregroundColor(.primary)
                 
                 if viewModel.title.isEmpty {
                     Text("Enter title")
-                        .foregroundColor(.gray)
+                        .foregroundColor(.secondary)
                         .padding(.top, 8)
                         .padding(.leading, 6)
                         .allowsHitTesting(false)
@@ -34,50 +35,52 @@ struct AddExpenseView: View {
             .frame(height: 100)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.gray, lineWidth: 1)
+                    .stroke(.secondary, lineWidth: 1)
             )
-            
-            
             
             Spacer().frame(height: 24)
             
             Text("Enter amount")
                 .font(.system(size: 12))
-            TextField("Enter amount", text: $viewModel.amount)
+            
+            TextField("", text: $viewModel.amount, prompt: Text("Enter amount").foregroundColor(.secondary))
                 .padding(12)
+                .foregroundColor(.primary)
+                .tint(.blue)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.numberPad)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray)
+                        .stroke(.secondary)
                 )
             
             Spacer().frame(height: 24)
             
             Text("Select category")
                 .font(.system(size: 12))
+            
             Menu {
                 ForEach(viewModel.expenseCategories, id: \.self) { category in
                     Button(category) {
                         viewModel.category = category
-                        // Update your view model here
-                        // viewModel.category = category
                     }
                 }
             } label: {
                 HStack {
                     Text(viewModel.category == "" ? "Select an item" : viewModel.category)
-                        .foregroundColor(viewModel.category == "" ? .gray : .primary)
+                        .foregroundColor(
+                            viewModel.category == "" ? .secondary : .primary
+                        )
                     
                     Spacer()
                     
                     Image(systemName: "chevron.down")
-                        .foregroundColor(.gray)
+                        .foregroundColor(.secondary)
                 }
                 .padding(12)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray)
+                        .stroke(.gray)
                 )
             }
             
@@ -91,7 +94,7 @@ struct AddExpenseView: View {
                 .padding(8)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray)
+                        .stroke(.secondary)
                 )
             
             Spacer().frame(height: 80)
@@ -104,7 +107,7 @@ struct AddExpenseView: View {
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
                     .background(.mint)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .cornerRadius(8)
             }
         }

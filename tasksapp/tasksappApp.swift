@@ -3,11 +3,8 @@ import SwiftData
 
 @main
 struct tasksappApp: App {
-    @AppStorage("selectedTheme") private var themeRawValue: String = AppTheme.system.rawValue
-    private var selectedTheme: AppTheme {
-        AppTheme(rawValue: themeRawValue) ?? .system
-    }
-//    @State private var themeUpdater = UUID()
+    @AppStorage(Constants.COLOR_SCHEME_KEY) private var selectedTheme: AppTheme = .system
+    
     @StateObject private var signinViewModel = SigninViewModel()
     @StateObject private var signupViewModel = SignupViewModel()
     @StateObject private var navigationCordinator = NavigationCoordinator()
@@ -17,21 +14,13 @@ struct tasksappApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-//                .id(themeUpdater)
                 .environmentObject(signinViewModel)
                 .environmentObject(signupViewModel)
                 .environmentObject(addExpenseViewModel)
                 .environmentObject(homeViewModel)
                 .environmentObject(rootViewModel)
                 .environmentObject(navigationCordinator)
-                .preferredColorScheme(
-                    selectedTheme == .light ? .light :
-                        selectedTheme == .dark ? .dark :
-                        nil
-                )
-//                .onChange(of: themeRawValue) {
-//                    themeUpdater = UUID()
-//                }
+                .preferredColorScheme(selectedTheme.colorScheme)
         }
         .modelContainer(for: Expense.self)
     }
