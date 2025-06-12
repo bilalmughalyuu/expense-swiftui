@@ -60,7 +60,7 @@ struct ExpenseRow: View {
                     .font(.system(size: 20))
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 12)
         .padding(.vertical, 16)
         .background(.gray.opacity(0.08))
         .cornerRadius(12)

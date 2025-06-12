@@ -2,84 +2,17 @@ import SwiftUI
 import Charts
 import SwiftData
 
-//struct ChartView: View {
-//    @Query(sort: \Expense.date) private var expenses: [Expense]
-//    
-//    // Sample data that matches your chart
-//    let sampleData = [
-//        (day: 8, amount: 70.0),
-//        (day: 10, amount: 40.0)
-//    ]
-//    
-//    var body: some View {
-//        VStack(alignment: .leading, spacing: 16) {
-//            Text("Expenses Chart")
-//                .font(.system(size: 22, weight: .semibold))
-//                .foregroundColor(.white)
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//            
-//            Chart {
-//                // Use sample data that matches your image
-//                ForEach(sampleData, id: \.day) { data in
-//                    BarMark(
-//                        x: .value("Day", data.day),
-//                        y: .value("Amount", data.amount)
-//                    )
-//                    .foregroundStyle(.blue)
-//                    .cornerRadius(2)
-//                }
-//            }
-//            .frame(height: 400)
-//            .chartBackground { _ in
-//                Color.black
-//            }
-//            .chartPlotStyle { plotArea in
-//                plotArea
-//                    .background(Color.black)
-//            }
-//            .chartYAxis {
-//                AxisMarks(
-//                    preset: .aligned,
-//                    position: .leading,
-//                    values: Array(stride(from: 0, through: 70, by: 5))
-//                ) { value in
-//                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [2, 2]))
-//                        .foregroundStyle(.gray.opacity(0.5))
-//                    AxisValueLabel()
-//                        .foregroundStyle(.white)
-//                        .font(.system(size: 12))
-//                }
-//            }
-//            .chartXAxis {
-//                AxisMarks(
-//                    position: .bottom,
-//                    values: [8, 10]
-//                ) { value in
-//                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [2, 2]))
-//                        .foregroundStyle(.gray.opacity(0.5))
-//                    AxisValueLabel()
-//                        .foregroundStyle(.white)
-//                        .font(.system(size: 12))
-//                }
-//            }
-//            .chartYScale(domain: 0...70)
-//            .chartXScale(domain: 7...11)
-//        }
-//        .padding(.horizontal, 24)
-//        .frame(maxWidth: .infinity, alignment: .top)
-//        .background(Color.black)
-//    }
-//}
-
-// If you want to use your actual expense data instead:
 struct ChartView: View {
     @Query(sort: \Expense.date) private var expenses: [Expense]
+    @Environment(\.colorScheme) var colorScheme
+    
+    @State private var selectedExpense: Expense?
     
     var body: some View {
         VStack(alignment: .leading) {
             Text("Expenses Chart")
                 .font(.system(size: 22, weight: .semibold))
-                .foregroundColor(.black)
+                .foregroundColor(colorScheme == .dark ? .white : .black)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer().frame(height: 24)
@@ -87,46 +20,88 @@ struct ChartView: View {
             Chart {
                 ForEach(expenses, id: \.id) { expense in
                     BarMark(
-                        x: .value("Day", Calendar.current.component(.day, from: expense.date)),
-                        y: .value("Amount", Double(expense.amount) ?? 0.0)
+                        x: .value("Date", Calendar.current.component(.day, from: expense.date)),
+                        y: .value("Amount", Double(expense.amount) ?? 0.0),
+                        width: .fixed(12)
                     )
                     .foregroundStyle(.blue)
                     .cornerRadius(2)
+                    .accessibilityLabel(Text("Amount"))
+                    .accessibilityValue(Text("\(expense.amount)"))
+                    
+                    if let selected = selectedExpense {
+                        PointMark(
+                            x: .value("Date", Calendar.current.component(.day, from: selected.date)),
+                            y: .value("Amount", Double(selected.amount) ?? 0.0)
+                        )
+                        .annotation(position: .top) {
+                            Text("AED\(selected.amount)")
+                                .font(.caption)
+                                .padding(5)
+                                .background(.ultraThinMaterial)
+                                .cornerRadius(5)
+                        }
+                    }
                 }
             }
             .frame(maxHeight: .infinity)
-//            .chartBackground { _ in
-//                Color.black
-//            }
-//            .chartPlotStyle { plotArea in
-//                plotArea
-//                    .background(Color.white)
-//            }
+            .chartOverlay { proxy in
+                GeometryReader { geometry in
+                    Rectangle()
+                        .fill(Color.clear)
+                        .contentShape(Rectangle())
+                        .gesture(
+                            DragGesture(minimumDistance: 0)
+                                .onEnded { value in
+                                    let location = value.location
+                                    if let date: Int = proxy.value(atX: location.x) {
+                                        // Find the closest matching bar
+                                        if let match = expenses.first(where: {
+                                            Calendar.current.component(.day, from: $0.date) == date
+                                        }) {
+                                            selectedExpense = match
+                                        }
+                                    }
+                                }
+                        )
+                }
+            }
+            .chartBackground { _ in
+                colorScheme == .dark ? Color.black : Color.clear
+            }
+            .chartPlotStyle { plotArea in
+                plotArea
+                    .background(colorScheme == .dark ? Color.black : Color.clear)
+            }
             .chartYAxis {
                 AxisMarks(
                     preset: .aligned,
-                    position: .leading
+                    position: .leading,
+                    values: .automatic(desiredCount: 10)
                 ) { value in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [2, 2]))
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [5, 5]))
                         .foregroundStyle(.gray.opacity(0.5))
                     AxisValueLabel()
-                        .foregroundStyle(.black)
+                        .foregroundStyle(colorScheme == .dark ? .white : .black)
                         .font(.system(size: 12))
                 }
             }
             .chartXAxis {
-                AxisMarks(position: .bottom) { value in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [2, 2]))
+                AxisMarks(
+                    position: .bottom,
+                    values: .automatic(desiredCount: 12)
+                ) { value in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [5, 5]))
                         .foregroundStyle(.gray.opacity(0.5))
                     AxisValueLabel()
-                        .foregroundStyle(.black)
+                        .foregroundStyle(colorScheme == .dark ? .white : .black)
                         .font(.system(size: 12))
                 }
             }
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, alignment: .top)
-//        .background(Color.black)
+        .background(colorScheme == .dark ? Color.black : Color.clear)
     }
 }
 
@@ -140,12 +115,12 @@ struct ChartView: View {
     
     // Create date for day 8 of current month
     var day8Components = calendar.dateComponents([.year, .month], from: today)
-    day8Components.day = 8
+    day8Components.day = 1
     let day8Date = calendar.date(from: day8Components) ?? today
     
     // Create date for day 10 of current month
     var day10Components = calendar.dateComponents([.year, .month], from: today)
-    day10Components.day = 10
+    day10Components.day = 30
     let day10Date = calendar.date(from: day10Components) ?? today
     
     context.insert(Expense(title: "Groceries", amount: "70.0", category: "Food", date: day8Date))

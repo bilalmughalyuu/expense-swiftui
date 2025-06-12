@@ -52,6 +52,7 @@ struct HomeView: View {
                         .listRowSeparator(.hidden)
                 }
                 .listStyle(PlainListStyle())
+                .scrollIndicators(.hidden)
             }
         }
         .padding(.horizontal, 24)
