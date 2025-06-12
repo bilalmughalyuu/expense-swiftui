@@ -11,3 +11,15 @@ extension UINavigationController: UIGestureRecognizerDelegate {
         return viewControllers.count > 1
     }
 }
+
+extension View {
+    func hideKeyboardOnTap() -> some View {
+        self.gesture(
+            TapGesture()
+                .onEnded {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }
+        )
+    }
+}
+

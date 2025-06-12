@@ -2,13 +2,18 @@ import SwiftUI
 
 struct SignupView: View {
     @EnvironmentObject var viewModel: SignupViewModel
+    @EnvironmentObject var navigation: NavigationCoordinator
     var body: some View {
         VStack (alignment: .leading){
-            Text("Sign up")
-                .font(.system(size: 40, weight: .bold))
-                .frame(maxWidth: .infinity, alignment: .center)
+            HStack{
+                Text("Create new account!")
+                    .font(.system(size: 44, weight: .bold))
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                Spacer().frame(width: 120)
+            }
             
-            Spacer().frame(height: 40)
+            Spacer().frame(height: 56)
             
             Text("Enter email")
                 .font(.system(size: 12))
@@ -70,6 +75,9 @@ struct SignupView: View {
             
             
         }
+        .onAppear {
+            viewModel.navigation = navigation
+        }
         .padding(.horizontal, 24)
     }
 }
@@ -77,4 +85,5 @@ struct SignupView: View {
 #Preview {
     SignupView()
         .environmentObject(SignupViewModel())
+        .environmentObject(NavigationCoordinator())
 }

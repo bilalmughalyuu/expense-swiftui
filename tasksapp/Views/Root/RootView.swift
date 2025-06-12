@@ -12,7 +12,7 @@ struct RootView: View {
                 .tag(0)
             AddExpenseView()
                 .tabItem{
-                    Image(systemName: "plus.circle")
+                    Image(systemName: "plus")
                     Text("Add Expense")
                 }
                 .tag(1)
@@ -29,4 +29,6 @@ struct RootView: View {
 #Preview {
     RootView()
         .environmentObject(RootViewModel())
+        .environmentObject(AddExpenseViewModel())
+        .environmentObject(HomeViewModel())
 }

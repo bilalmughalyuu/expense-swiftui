@@ -28,23 +28,12 @@ struct HomeView: View {
             Spacer().frame(height: 24)
             
             if expenses.isEmpty {
-                // Empty state
-                VStack(alignment: .center, spacing: 16) {
-                    Spacer()
-                    Image(systemName: "list.bullet.rectangle")
-                        .font(.system(size: 50))
-                        .foregroundColor(.gray)
-                    
+                VStack{
                     Text("No expenses yet")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                    
-                    Text("Add your first expense to get started")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                    Spacer()
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.primary)
                 }
+                .frame(maxHeight: .infinity)
             } else {
                 List(expenses) { expense in
                     ExpenseRow(expense: expense)
@@ -65,7 +54,6 @@ struct HomeView: View {
         .refreshable {
 //            viewModel.fetchData()
         }
-        
     }
 }
 

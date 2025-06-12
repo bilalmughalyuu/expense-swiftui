@@ -19,7 +19,7 @@ struct SigninView: View {
                 .keyboardType(.emailAddress)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray, lineWidth: 1)
+                        .stroke(.secondary, lineWidth: 1)
                 )
             
             Spacer().frame(height: 16)
@@ -30,7 +30,7 @@ struct SigninView: View {
                 .padding(12)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray, lineWidth: 1)
+                        .stroke(.secondary, lineWidth: 1)
                 )
             
             

@@ -32,7 +32,6 @@ class AddExpenseViewModel: ObservableObject {
         do {
             modelContext?.insert(expense)
             try modelContext?.save()
-            print("Expense saved: \(title), \(amount), \(category), \(date)")
             title = ""
             amount = ""
             category = ""
