@@ -16,13 +16,28 @@ struct AddExpenseView: View {
             
             Text("Enter title")
                 .font(.system(size: 12))
-            TextField("Enter title", text: $viewModel.title)
-                .padding(12)
-                .textInputAutocapitalization(.never)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray, lineWidth: 1)
-                )
+            ZStack(alignment: .topLeading) {
+                
+                TextEditor(text: $viewModel.title)
+                    .padding(.leading, 2)
+                
+                if viewModel.title.isEmpty {
+                    Text("Enter title")
+                        .foregroundColor(.gray)
+                        .padding(.top, 8)
+                        .padding(.leading, 6)
+                        .allowsHitTesting(false)
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .frame(height: 100)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.gray, lineWidth: 1)
+            )
+            
+            
             
             Spacer().frame(height: 24)
             

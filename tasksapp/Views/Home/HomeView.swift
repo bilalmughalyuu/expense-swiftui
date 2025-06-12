@@ -5,21 +5,23 @@ struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var viewModel: HomeViewModel
     
+    @AppStorage("selectedTheme") var selectedTheme: AppTheme = .system
+    
     var body: some View {
         VStack {
             HStack {
                 Text("Hello there!")
                     .font(.system(size: 22, weight: .semibold))
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Button(action: {
-//                    viewModel.toggleDarkMode()
+                    selectedTheme = selectedTheme == .dark ? .light : .dark
                 }) {
                     Image(systemName: "moon")
                         .resizable()
                         .frame(width: 24, height: 24)
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                 }
             }
             
