@@ -106,8 +106,8 @@ struct AddExpenseView: View {
                 Text("Add expense")
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
-                    .background(.mint)
-                    .foregroundColor(.primary)
+                    .background(Color("ButtonColor"))
+                    .foregroundColor(.white)
                     .cornerRadius(8)
             }
         }

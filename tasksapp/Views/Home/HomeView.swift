@@ -4,7 +4,7 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var viewModel: HomeViewModel
-    
+    @Query(sort: [SortDescriptor(\Expense.date, order: .reverse)]) private var expenses: [Expense]
     @AppStorage(Constants.COLOR_SCHEME_KEY) var selectedTheme: AppTheme = .system
     
     var body: some View {
@@ -27,7 +27,7 @@ struct HomeView: View {
             
             Spacer().frame(height: 24)
             
-            if viewModel.expensesList.isEmpty {
+            if expenses.isEmpty {
                 // Empty state
                 VStack(alignment: .center, spacing: 16) {
                     Spacer()
@@ -46,7 +46,7 @@ struct HomeView: View {
                     Spacer()
                 }
             } else {
-                List(viewModel.expensesList) { expense in
+                List(expenses) { expense in
                     ExpenseRow(expense: expense)
                         .buttonStyle(PlainButtonStyle())
                         .listRowInsets(EdgeInsets())
@@ -63,7 +63,7 @@ struct HomeView: View {
             viewModel.setModelContext(modelContext)
         }
         .refreshable {
-            viewModel.fetchData()
+//            viewModel.fetchData()
         }
         
     }

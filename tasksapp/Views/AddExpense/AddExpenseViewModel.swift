@@ -15,7 +15,6 @@ class AddExpenseViewModel: ObservableObject {
     
     func setModelContext(_ context: ModelContext) {
         self.modelContext = context
-//        fetchExpenses()
     }
     
     func setRootViewModel(viewModel: RootViewModel) {
