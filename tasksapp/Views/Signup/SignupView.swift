@@ -7,10 +7,10 @@ struct SignupView: View {
         VStack (alignment: .leading){
             HStack{
                 Text("Create new account!")
-                    .font(.system(size: 44, weight: .bold))
+                    .font(.system(size: 36, weight: .bold))
                     .frame(maxWidth: .infinity, alignment: .center)
                 
-                Spacer().frame(width: 120)
+                Spacer().frame(width: 100)
             }
             
             Spacer().frame(height: 56)
