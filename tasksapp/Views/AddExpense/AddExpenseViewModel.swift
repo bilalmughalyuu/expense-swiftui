@@ -21,6 +21,19 @@ class AddExpenseViewModel: ObservableObject {
         self.rootViewModel = viewModel
     }
     
+    func updateExpense(expense: Expense) {
+        expense.title = title
+        expense.amount = amount
+        expense.category = category
+        expense.date = date
+        
+        do {
+            try modelContext?.save()
+            clearFields()
+        } catch {
+            print("Failed to update: \(error)")
+        }
+    }
     
     func addExpense() {
         guard !title.isEmpty, !amount.isEmpty, !category.isEmpty else {
@@ -32,14 +45,17 @@ class AddExpenseViewModel: ObservableObject {
         do {
             modelContext?.insert(expense)
             try modelContext?.save()
-            title = ""
-            amount = ""
-            category = ""
-            date = Date()
+            clearFields()
             rootViewModel?.selectedTab = 0
         } catch {
             print("Failed to save expense: \(error.localizedDescription)")
         }
     }
     
+    private func clearFields() {
+        title = ""
+        amount = ""
+        category = ""
+        date = Date()
+    }
 }

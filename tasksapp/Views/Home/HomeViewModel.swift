@@ -9,6 +9,8 @@ class HomeViewModel: ObservableObject {
         self.modelContext = context
     }
     
+    @Published var expense: Expense?
+    
     func deleteExpense(id: UUID) {
         guard let modelContext = modelContext else {
             print("ModelContext is nil")

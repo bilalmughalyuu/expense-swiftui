@@ -4,6 +4,7 @@ import SwiftData
 struct ExpenseRow: View {
     var expense: Expense
     @EnvironmentObject var viewModel: HomeViewModel
+    @EnvironmentObject var rootViewModel: RootViewModel
     @Environment(\.modelContext) private var modelContext
     
     var dateFormatter: DateFormatter = {
@@ -58,6 +59,10 @@ struct ExpenseRow: View {
                 Image(systemName: "pencil")
                     .foregroundColor(.primary)
                     .font(.system(size: 20))
+                    .onTapGesture {
+                        viewModel.expense = expense
+                        rootViewModel.selectedTab = 1
+                    }
             }
         }
         .padding(.horizontal, 12)
@@ -71,4 +76,5 @@ struct ExpenseRow: View {
 #Preview {
     ExpenseRow(expense: Expense(title: "Groceries", amount: "85.50", category: "Food", date: Date()))
         .environmentObject(HomeViewModel())
+        .environmentObject(RootViewModel())
 }

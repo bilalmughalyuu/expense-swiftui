@@ -4,7 +4,9 @@ import SwiftData
 struct AddExpenseView: View {
     @EnvironmentObject var rootViewModel: RootViewModel
     @EnvironmentObject var viewModel: AddExpenseViewModel
+    @EnvironmentObject var homeViewModel: HomeViewModel
     @Environment(\.modelContext) private var modelContext
+
     var body: some View {
         ScrollView{
             VStack(alignment: .leading){
@@ -102,9 +104,17 @@ struct AddExpenseView: View {
                 
                 
                 Button(action: {
-                    viewModel.addExpense()
+                    if let existingExpense = homeViewModel.expense {
+                        homeViewModel.expense = nil
+                        viewModel.updateExpense(expense: existingExpense)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            rootViewModel.selectedTab = 0
+                        }
+                    } else {
+                        viewModel.addExpense()
+                    }
                 }) {
-                    Text("Add expense")
+                    Text(homeViewModel.expense != nil ? "Edit Expense" : "Add Expense")
                         .padding(.vertical, 8)
                         .frame(maxWidth: .infinity)
                         .background(Color("ButtonColor"))
@@ -113,9 +123,16 @@ struct AddExpenseView: View {
                 }
             }
             .onAppear {
-                print("HomeView appeared")
+                print("AddExpenseView appeared")
                 viewModel.setModelContext(modelContext)
                 viewModel.setRootViewModel(viewModel: rootViewModel)
+                
+                if let existing = homeViewModel.expense, viewModel.title.isEmpty {
+                    viewModel.title = existing.title
+                    viewModel.amount = String(existing.amount)
+                    viewModel.category = existing.category
+                    viewModel.date = existing.date
+                }
             }
             .padding(.horizontal, 24)
             .frame(maxHeight: .infinity, alignment: .top)
